@@ -1,0 +1,8 @@
+{
+  "name": "pivo",
+  "description": "Pivo's shared Claude Code skills. Every skill in skills/ is available as /pivo:<skill-name>.",
+  "author": {
+    "name": "bifshteks"
+  },
+  "repository": "https://github.com/bifshteks/skills"
+}

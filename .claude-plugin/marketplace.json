@@ -1,0 +1,16 @@
+{
+  "name": "pivo",
+  "owner": {
+    "name": "bifshteks"
+  },
+  "metadata": {
+    "description": "Pivo's shared Claude Code skills."
+  },
+  "plugins": [
+    {
+      "name": "pivo",
+      "source": "./",
+      "description": "Pivo's shared Claude Code skills. Every skill in skills/ is available as /pivo:<skill-name>."
+    }
+  ]
+}
