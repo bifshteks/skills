@@ -5,9 +5,11 @@ For example, `skills/qwe/SKILL.md` becomes `/pivo:qwe`.
 
 ## Install
 
-You need read access to this repo. Claude Code clones it with your existing git credentials (SSH key or `gh auth login`).
+You need read access to this repo. Claude Code clones it over SSH (`git@github.com:bifshteks/skills.git`) with your existing git credentials.
+Check access with `git ls-remote git@github.com:bifshteks/skills.git`.
+The repo is private, so github.com and raw links return 404 to anyone without access.
 
-In Claude Code:
+In an interactive `claude` terminal:
 
 ```
 /plugin marketplace add bifshteks/skills
@@ -15,6 +17,18 @@ In Claude Code:
 ```
 
 Then run `/reload-plugins` or restart Claude Code.
+
+`/plugin` opens an interactive menu, so it does not work in the Claude desktop app's Code tab. There, or from any shell, use the CLI:
+
+```bash
+claude plugin marketplace add bifshteks/skills
+claude plugin install pivo@pivo
+claude plugin list   # pivo@pivo should show Status: enabled
+```
+
+The plugin is picked up by sessions started after the install.
+
+`pivo@pivo` is `<plugin>@<marketplace>`: the marketplace in `marketplace.json` and its only plugin are both named `pivo`.
 
 ### Updates
 
@@ -24,8 +38,11 @@ Every push to `master` is a new version. To pull it:
 /plugin marketplace update pivo
 ```
 
+or `claude plugin marketplace update pivo` from a shell.
+
 To update automatically at startup, turn on auto-update for the `pivo` marketplace in `/plugin` → **Marketplaces**.
 Because the repo is private, background updates also need `GITHUB_TOKEN` set in your environment.
+If plain `git` over HTTPS asks for a username, run `gh auth setup-git`.
 
 ### Enable for a whole project
 
