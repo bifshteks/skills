@@ -4,14 +4,15 @@ set -euo pipefail
 
 usage='usage:
   store.sh root                              create ~/.pivo if missing; print it
-  store.sh find <TICKET|slug>                print matching unit-of-work dirs; exit 1 if none
-  store.sh dir <name>                        create ~/.pivo/<name> if missing; print it
+  store.sh find <TICKET|slug>                print matching dirs in ~/.pivo/work; exit 1 if none
+  store.sh dir <name>                        create ~/.pivo/work/<name> if missing; print it
                                              name: <slug> or <TICKET>-<slug>
   store.sh lock <file> <owner>               exit 0: acquired; exit 1: held, prints "<owner> <time>"
   store.sh unlock <file> <owner> [--force]   exit 0: released; exit 1: not yours, prints holder
 exit 2: bad usage or invalid name'
 
 root="$HOME/.pivo"
+work="$root/work"
 slug='[a-z0-9]+(-[a-z0-9]+)*'
 ticket='[A-Z][A-Z0-9]*-[0-9]+'
 
@@ -32,7 +33,7 @@ case "${1:-}" in
     else die 2 "invalid query '$q': want a ticket key (QWE-123) or a slug (fix-login)"
     fi
     found=1
-    for d in "$root"/*/; do
+    for d in "$work"/*/; do
       [[ -d "$d" ]] || continue
       d="${d%/}"
       [[ "${d##*/}" =~ $match ]] || continue
@@ -43,8 +44,8 @@ case "${1:-}" in
     ;;
   dir)
     valid_name "${2:-}" || die 2 "invalid name '${2:-}': want <slug> or <TICKET>-<slug>, e.g. QWE-123-fix-login"
-    mkdir -p "$root/$2"
-    echo "$root/$2"
+    mkdir -p "$work/$2"
+    echo "$work/$2"
     ;;
   lock)
     [[ -n "${2:-}" && -n "${3:-}" ]] || die 2 "usage: store.sh lock <file> <owner>"

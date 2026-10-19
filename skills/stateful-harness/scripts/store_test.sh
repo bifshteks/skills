@@ -22,8 +22,8 @@ test_dir_creates_named_directory_and_prints_it() {
   fresh_home
   for name in QWE-123-create-stateful-harness-skill create-stateful-harness-skill; do
     out="$("$STORE" dir "$name")" || fail "$name: exit $?"
-    [[ "$out" == "$HOME/.pivo/$name" ]] || fail "$name: printed '$out'"
-    [[ -d "$HOME/.pivo/$name" ]] || fail "$name: not created"
+    [[ "$out" == "$HOME/.pivo/work/$name" ]] || fail "$name: printed '$out'"
+    [[ -d "$HOME/.pivo/work/$name" ]] || fail "$name: not created"
   done
 }
 
@@ -34,23 +34,24 @@ test_dir_rejects_invalid_names_without_creating_anything() {
     code=$?
     [[ $code == 2 ]] || fail "'$name': exit $code, want 2"
   done
-  [[ -z "$(ls -A "$HOME/.pivo" 2>/dev/null)" ]] || fail "created: $(ls -A "$HOME/.pivo")"
-  [[ ! -e "$HOME/escape" ]] || fail "escaped ~/.pivo"
+  [[ -z "$(ls -A "$HOME/.pivo/work" 2>/dev/null)" ]] || fail "created: $(ls -A "$HOME/.pivo/work")"
+  [[ ! -e "$HOME/.pivo/escape" && ! -e "$HOME/escape" ]] || fail "escaped ~/.pivo/work"
 }
 
 test_find_lists_directories_by_ticket_or_slug() {
   fresh_home
-  mkdir -p "$HOME/.pivo"/{QWE-123-api-spike,QWE-123-migration-plan,QWE-1234-other,fix-login,ABC-9-fix-login,fix-login-v2}
-  touch "$HOME/.pivo/QWE-123-notes.md"
+  mkdir -p "$HOME/.pivo/work"/{QWE-123-api-spike,QWE-123-migration-plan,QWE-1234-other,fix-login,ABC-9-fix-login,fix-login-v2}
+  mkdir -p "$HOME/.pivo/wt/QWE-123-worktree"
+  touch "$HOME/.pivo/work/QWE-123-notes.md"
 
   out="$("$STORE" find QWE-123)" || fail "ticket: exit $?"
-  want="$HOME/.pivo/QWE-123-api-spike
-$HOME/.pivo/QWE-123-migration-plan"
+  want="$HOME/.pivo/work/QWE-123-api-spike
+$HOME/.pivo/work/QWE-123-migration-plan"
   [[ "$out" == "$want" ]] || fail "ticket: got '$out'"
 
   out="$("$STORE" find fix-login)" || fail "slug: exit $?"
-  want="$HOME/.pivo/ABC-9-fix-login
-$HOME/.pivo/fix-login"
+  want="$HOME/.pivo/work/ABC-9-fix-login
+$HOME/.pivo/work/fix-login"
   [[ "$out" == "$want" ]] || fail "slug: got '$out'"
 }
 

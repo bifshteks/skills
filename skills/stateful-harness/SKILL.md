@@ -11,7 +11,8 @@ through stdout and exit code: acting on a result is the caller's rule.
 ## Pick the directory
 
 State belongs to a **unit of work**: one piece of work the user does, usually a
-ticket, often split across many sessions and subagents. Each gets its own directory.
+ticket, often split across many sessions and subagents. Each gets its own directory
+in `~/.pivo/work/`.
 
 1. Name it `<TICKET>-<slug>` when there is a ticket, `<slug>` otherwise. The slug is
    a short kebab-case name for the angle of work, so one ticket can own several
