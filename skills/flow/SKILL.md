@@ -4,7 +4,7 @@ description: Shared contract the /pivo:shape, /pivo:grill, /pivo:spec, /pivo:tic
 user-invocable: false
 ---
 
-# Workspace
+# Flow
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ phase.
 
 | Symptom | Fix |
 |---|---|
-| A repo has no known path | § Resolving a repo |
+| A repo has no known path | Resolve it per `pivo:multirepo`. |
 | The forge CLI (`glab` for GitLab, `gh` for GitHub) reports not logged in, or `401` | The user runs `glab auth login --hostname <host>` / `gh auth login` — it needs a browser. Stop and wait. |
 | The issue tracker's tools are absent from the session | Tell the user which MCP server or CLI is missing; carry on without the ticket if they say so. |
 
@@ -22,6 +22,26 @@ phase.
 Before forming any opinion about a change, read what the project says about itself:
 
 * When the change belongs to a workspace (`mur workspace show <name>`, see `pivo:multirepo`): which repo does what.
+
+## The effort
+
+An **effort** is one change, from intent to open merge requests: a unit of work
+in `pivo:stateful-harness`. Call the Skill tool for `pivo:stateful-harness`
+before the phase reads or writes its first file; `store.sh` below is the script
+it names, and every storage path a phase uses comes from it.
+
+1. Agree the effort's `<name>` per § Tickets in the tracker.
+2. `store.sh find <TICKET-KEY|slug>` — resume a listed directory when it is this
+   change.
+3. Otherwise `store.sh dir <name>`.
+
+The printed path is `<effort>`. It holds `intent.md`, `understanding.md`,
+`spec.md` and `issues/NN-<ticket-slug>.md`.
+
+Earlier efforts in an area: list `$(store.sh root)/work/`.
+
+Worktrees live in `$(store.sh root)/wt/<repo>/<ticket>/`, outside `work/`: a
+checkout is not state.
 
 ## Approval gate
 
@@ -40,11 +60,11 @@ an MCP server or a CLI for Jira, GitHub or GitLab issues, Linear.
 A ticket is optional. "No ticket" is a legitimate answer — plenty of changes start
 as "I want to change X" — and every phase runs identically without one. When there
 is one, its key is the only thread between the ticket and the merge requests, so it
-carries all three names:
+carries all three names. `<slug>` is a short kebab-case name for the change:
 
 | | With a ticket | Without |
 |---|---|---|
-| `<slug>` | `<TICKET-KEY>` | short kebab-case name for the change |
+| effort `<name>` | `<TICKET-KEY>-<slug>` | `<slug>` |
 | branch | `<TICKET-KEY>-<ticket-slug>` | `<slug>-<ticket-slug>` |
 | MR title | `<TICKET-KEY>: <ticket title>` | `<ticket title>` |
 
@@ -65,8 +85,7 @@ Work with what is there. If an earlier phase would have helped, suggest it in th
 Next block.
 
 **No effort yet.** Started from a bare prompt: one `AskUserQuestion` — a ticket
-key, an existing effort under `work/`, or none. Agree the `<slug>` per the naming
-table and create `work/<slug>/`.
+key, an existing effort, or none. Then find or create it per § The effort.
 
 **No grill behind it.** Starting below `understanding.md` means nobody has
 settled the design. Ask only the **blockers** — decisions with no safe default:

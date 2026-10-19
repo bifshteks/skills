@@ -1,21 +1,21 @@
 ---
 name: spec
-description: "Write the spec for a change to ~/.pivo/work/<slug>/spec.md: what and why, repos affected, decisions settled, contracts touched, deploy ordering, out of scope. Stops at a gate for your approval."
+description: "Write the spec for a change to the effort's spec.md: what and why, repos affected, decisions settled, contracts touched, deploy ordering, out of scope. Stops at a gate for your approval."
 disable-model-invocation: true
 ---
 
 # Spec
 
-Call the Skill tool for `pivo:workspace` before anything else: the paths, the
-resolver and the project context live there.
+Call the Skill tool for `pivo:flow` before anything else: the effort, the
+naming and the project context live there.
 
-Read the effort's input per **Inputs** in `pivo:workspace`: `understanding.md`
-from `~/.pivo/work/<slug>/`, and `intent.md` if it exists. The spec
+Find or create the effort per `pivo:flow` § The effort, then read its input per
+**Inputs** there: `understanding.md`, and `intent.md` if it exists. The spec
 elaborates `understanding.md` and never contradicts it. Without one, work from
 `intent.md` or the prompt; its *assumed* decisions go in the spec's Decisions,
 where Gate 1 catches them.
 
-Write `~/.pivo/work/<slug>/spec.md`. Create the directory if needed.
+Write `<effort>/spec.md`.
 
 The spec is for the implementing sessions, which start cold and will not have the
 grilling conversation. Everything they need to not re-litigate settled questions
@@ -48,7 +48,7 @@ Use the glossary's vocabulary throughout. Do not drift to synonyms it avoids.
 Show the user the spec. Wait for approval. Edits are expected — this is the
 cheapest point in the whole effort to change direction.
 
-Then stop, and end with the Next block from `pivo:workspace`. Weigh:
+Then stop, and end with the Next block from `pivo:flow`. Weigh:
 
 - `/pivo:tickets` — several repos, a contract that must land first, deploy
   ordering, or two changes in one repo that need sequencing.

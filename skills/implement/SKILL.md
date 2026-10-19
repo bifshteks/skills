@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # Implement, review, merge request
 
-Call the Skill tool for `pivo:workspace` before anything else: the paths, the
-resolver and the project context live there.
+Call the Skill tool for `pivo:flow` before anything else: the effort, the
+naming and the project context live there.
 
 ## Tickets
 
-Read the effort's input per **Inputs** in `pivo:workspace`. Implement runs from
-any of them through to open MRs.
+Find or create the effort per `pivo:flow` § The effort, then read its input per
+**Inputs** there. Implement runs from any of them through to open MRs.
 
 With `issues/`, those are the tickets. Without, cut them yourself from the best
 input present — `spec.md`, `understanding.md`, `intent.md`, or the prompt:
@@ -37,38 +37,40 @@ tickets, so do not assume:
   ready-to-paste command per ticket: `cd` into its worktree, pointed at its issue
   file.
 
+Either way, hand each ticket the absolute path of its issue file under
+`<effort>/issues/`. That session is the only writer of that file.
+
 Mixed is fine. Only unblocked tickets go out: a ticket with `Blocked by` waits
 until every file it names is `Status: resolved`.
 
 ## Worktree per ticket
 
-For each ticket, resolve its `Repo:` line to a local path per `pivo:workspace`
-§ Resolving a repo, then:
+For each ticket, resolve its `Repo:` line to a local path per `pivo:multirepo`,
+then, with `store.sh` from `pivo:flow` § The effort:
 
 ```bash
 REPO=<resolved path>
 BASE=$(git -C "$REPO" symbolic-ref --short refs/remotes/origin/HEAD) || exit   # origin/main, origin/master, …
-WT=~/.pivo/wt/<repo>/<ticket>
+WT="$(store.sh root)/wt/<repo>/<ticket>"
 git -C "$REPO" fetch origin
 git -C "$REPO" worktree add -b <branch> "$WT" "$BASE"
-ln -sfn ~/.pivo/work/<slug> "$WT/.scratch"
 ```
 
-`<branch>` and the MR title follow the naming table in `pivo:workspace`.
+`<branch>` and the MR title follow the naming table in `pivo:flow`.
 
-The symlink is what lets every session read the same spec and issue files at
-`.scratch/`, so a decision recorded in one is visible to the others. Without it
-each worktree sees an empty tracker.
+The worktree holds only code. Every session reads the same spec and issue files
+from `<effort>`, so a decision recorded in one is visible to the others.
 
 The user's own clone is never touched beyond `fetch` and `worktree add` — no
 branch switching, no stashing.
 
 ## Implementation session
 
-Set `Status: claimed` in the issue file before any work.
+A session handed no issue-file path finds the effort per `pivo:flow` § The
+effort. Set `Status: claimed` in the issue file before any work.
 
 Read, in order: the issue file, whichever of `spec.md`, `understanding.md` and
-`intent.md` sit beside it, then the project context per `pivo:workspace` — the
+`intent.md` sit in `<effort>`, then the project context per `pivo:flow` — the
 repo's `CLAUDE.md` / `AGENTS.md` and `docs/adr/`, the workspace's map of repos,
 and the project's glossary and style skills. Proceed silently past what is absent.
 
@@ -144,7 +146,7 @@ the ticket is wrong, not the code: the branch stays unpushed until the user deci
 Push the branch and open the MR against the base branch with the forge's CLI —
 `glab mr create` on GitLab, `gh pr create` on GitHub.
 
-- Title: per the naming table in `pivo:workspace`.
+- Title: per the naming table in `pivo:flow`.
 - Description: the project's own MR description format if it has one, otherwise
   call the Skill tool for `pivo:mr-description` and write it to that format.
 

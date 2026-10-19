@@ -1,23 +1,23 @@
 ---
 name: tickets
-description: "Break a spec into tickets, one file per ticket under ~/.pivo/work/<slug>/issues/ — one ticket, one repo, one merge request, with explicit blocking edges. Stops at a gate for your approval of the breakdown."
+description: "Break a spec into tickets, one file per ticket under the effort's issues/ — one ticket, one repo, one merge request, with explicit blocking edges. Stops at a gate for your approval of the breakdown."
 disable-model-invocation: true
 ---
 
 # Tickets
 
-Call the Skill tool for `pivo:workspace` before anything else: the paths, the
-resolver and the project context live there.
+Call the Skill tool for `pivo:flow` before anything else: the effort, the
+naming and the project context live there.
 
-This is the one phase that needs its input: `~/.pivo/work/<slug>/spec.md`.
-Without it, stop and end with the Next block from `pivo:workspace` offering
+This is the one phase that needs its input: `<effort>/spec.md`, with the effort
+found per `pivo:flow` § The effort. Without it, stop and end with the Next block from `pivo:flow` offering
 `/pivo:spec` — and `/pivo:implement`, which cuts its own tickets when the change
 is small enough to skip both.
 
 Break the spec into tickets. One per file, numbered from `01`:
 
 ```
-~/.pivo/work/<slug>/issues/01-<ticket-slug>.md
+<effort>/issues/01-<ticket-slug>.md
 ```
 
 Never a single combined tickets file.
@@ -84,5 +84,5 @@ can run in parallel. Call out overlaps and the implied ordering.
 Wait for approval. A bad decomposition becomes several worktrees of wasted work,
 which is exactly what this gate exists to prevent.
 
-Then stop, and end with the Next block from `pivo:workspace`: `/pivo:implement`,
+Then stop, and end with the Next block from `pivo:flow`: `/pivo:implement`,
 naming which tickets are unblocked and can go out first.

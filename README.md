@@ -68,7 +68,7 @@ An opinionated path from a fuzzy want to open merge requests. Each phase is invo
 
 `/pivo:shape` is optional before any of them, for when the problem is not clear yet.
 
-Artifacts (`intent.md`, `understanding.md`, `spec.md`, `issues/`) live in `~/.pivo/work/<slug>/`, and worktrees live in `~/.pivo/wt/`. Both are described in `pivo:workspace`, the contract every phase loads first.
+Each change is an effort: one directory, `~/.pivo/work/<TICKET>-<slug>/` (or `~/.pivo/work/<slug>/` without a ticket), holding its artifacts (`intent.md`, `understanding.md`, `spec.md`, `issues/`). Worktrees live in `~/.pivo/wt/`. `pivo:flow`, the contract every phase loads first, describes both, and `pivo:stateful-harness` owns the storage.
 The phases know nothing about any particular project. They read the repo's `CLAUDE.md` / `AGENTS.md`, and they prefer any project skill in the session for the glossary, style, review, MR description or watching MRs. Without one, they fall back to their own defaults, such as `pivo:mr-description`.
 
 ## Add a skill

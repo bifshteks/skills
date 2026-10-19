@@ -1,40 +1,40 @@
 ---
 name: grill
-description: "Intake and grill a change: read the ticket or the described change, settle the outcome it serves, resolve its words against the project's glossary, then interview the user one question at a time until the design tree is settled. Writes ~/.pivo/work/<slug>/understanding.md for the user to approve."
+description: "Intake and grill a change: read the ticket or the described change, settle the outcome it serves, resolve its words against the project's glossary, then interview the user one question at a time until the design tree is settled. Writes the effort's understanding.md for the user to approve."
 disable-model-invocation: true
 ---
 
 # Grill
 
-Call the Skill tool for `pivo:workspace` before anything else: the paths, the
-resolver and the project context live there.
+Call the Skill tool for `pivo:flow` before anything else: the effort, the
+naming and the project context live there.
 
 ## Intake
 
-Ask whether there is a ticket, through `AskUserQuestion`. If `~/.pivo/work/`
-holds an effort with `intent.md` and no `understanding.md`, `/pivo:shape` ran for
-it: offer it as an option too, and its directory name is the `<slug>`.
+Ask whether there is a ticket, through `AskUserQuestion`. An earlier effort with
+`intent.md` and no `understanding.md` means `/pivo:shape` ran for it: offer it as
+an option too, and that is the effort.
 
 With a ticket, read it from the tracker; without one, the user describes the
-change. Agree the `<slug>` per the naming table in `pivo:workspace`.
+change. Find or create the effort per `pivo:flow` § The effort.
 
 ### Outcome first
 
-If `~/.pivo/work/<slug>/intent.md` exists, read it: its **Problem**,
-**Outcome** and **How we will know** are settled. Skip to Words.
+If `<effort>/intent.md` exists, read it: its **Problem**, **Outcome** and **How
+we will know** are settled. Skip to Words.
 
 Otherwise search the tracker for a parent ticket that states the goal, and list
-`~/.pivo/work/` for earlier efforts in the same area. Then ask the user, in
+earlier efforts in the same area. Then ask the user, in
 prose and before any design question: **what should be different once this
 ships, and how will you notice?**
 
 - An answer naming a mechanism without a problem — ask what the mechanism is for.
 - "Not sure", or nothing concrete — stop, and end with the Next block from
-  `pivo:workspace` offering `/pivo:shape`.
+  `pivo:flow` offering `/pivo:shape`.
 
 ### Words
 
-Then read the project context per `pivo:workspace`. Resolve every domain word in
+Then read the project context per `pivo:flow`. Resolve every domain word in
 the ask against the project's glossary, where it has one, **before** forming any
 opinion about the change. Domain words collide with internal component names —
 one word for a user-facing resource and a background process, "queue" meaning
@@ -100,10 +100,10 @@ payload. Wants a user cannot name surface the moment they see something concrete
 ## Confirm
 
 Done when the frontier is empty and every item above is settled. Write
-`~/.pivo/work/<slug>/understanding.md`:
+`<effort>/understanding.md`:
 
 ```markdown
-# <slug> — understanding
+# <name> — understanding
 
 ## Outcome
 ## How we will know
@@ -114,7 +114,7 @@ One line each, with its reason.
 Only if one was shown.
 ```
 
-Run the approval gate from `pivo:workspace`: "Does this match what you want?" —
+Run the approval gate from `pivo:flow`: "Does this match what you want?" —
 "Yes", "The outcome is wrong", "The scope is wrong", "A decision is wrong".
 
 ## Decisions fall out of grilling
@@ -125,7 +125,7 @@ ADR, `AGENTS.md` — per its own rules if it states them. Propose the place and
 draft the text; the user approves. A decision that exists only in this transcript
 is lost the moment the session ends.
 
-Then stop, and end with the Next block from `pivo:workspace`. Weigh:
+Then stop, and end with the Next block from `pivo:flow`. Weigh:
 
 - `/pivo:implement` — the decisions fit in `understanding.md`: one repo, no
   contract change, no deploy ordering.

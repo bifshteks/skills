@@ -6,8 +6,8 @@ disable-model-invocation: true
 
 # Shape
 
-Call the Skill tool for `pivo:workspace` before anything else: the paths, the
-resolver and the project context live there.
+Call the Skill tool for `pivo:flow` before anything else: the effort, the
+naming and the project context live there.
 
 Grilling settles **how**. This settles **what for**.
 
@@ -27,9 +27,9 @@ a key, read it from the tracker. Without one, search the tracker for the area an
 ask whether this serves a ticket, epic or incident that is not its own. Read it
 before forming any view of the change.
 
-**Earlier work.** List `~/.pivo/work/` and read any effort touching the same
-area. Ask whether this continues, replaces or reverts it — and if replaces, what
-was wrong with it.
+**Earlier work.** List earlier efforts per `pivo:flow` § The effort and read any
+one touching the same area. Ask whether this continues, replaces or reverts it —
+and if replaces, what was wrong with it.
 
 **Mechanism-shaped asks.** When the ask names a mechanism ("add a retry", "add a
 metric"), ask what it is meant to achieve, then whether the mechanism is the only
@@ -59,11 +59,11 @@ The user picks, mixes or rejects them in their own words.
 
 ## Intent
 
-Agree a `<slug>` per `pivo:workspace`. If you found the ticket this serves, the
-slug is its key. Write `~/.pivo/work/<slug>/intent.md`:
+Find or create the effort per `pivo:flow` § The effort, named after the ticket
+this serves if you found one. Write `<effort>/intent.md`:
 
 ```markdown
-# <slug> — intent
+# <name> — intent
 
 ## Problem
 What is wrong or missing today, for whom. Who asked; the ticket, if any.
@@ -82,13 +82,13 @@ Framings considered and set aside, each with its reason.
 What is still unknown, and who would know.
 ```
 
-Run the approval gate from `pivo:workspace`: "Does this say what you want?" —
+Run the approval gate from `pivo:flow`: "Does this say what you want?" —
 "Yes", "The problem is wrong", "The outcome is wrong", "Something is missing".
 
 Done when the user says yes. If **Outcome** or **How we will know** cannot be
 filled, the change is not ready to grill — say so and stop.
 
-Then stop, and end with the Next block from `pivo:workspace`. Weigh:
+Then stop, and end with the Next block from `pivo:flow`. Weigh:
 
 - `/pivo:grill` — design decisions are still open: **Open** is not empty, more
   than one repo, a contract, something irreversible.
