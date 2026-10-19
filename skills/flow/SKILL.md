@@ -1,6 +1,7 @@
 ---
-name: workspace
-description: Shared contract the /pivo:shape, /pivo:grill, /pivo:spec, /pivo:tickets and /pivo:implement phases load first — the ~/.pivo layout, repo resolution, project context, approval gate, naming, inputs and the Next block.
+name: flow
+description: Shared contract the /pivo:shape, /pivo:grill, /pivo:spec, /pivo:tickets and /pivo:implement phases load first
+user-invocable: false
 ---
 
 # Workspace
@@ -14,50 +15,13 @@ phase.
 |---|---|
 | A repo has no known path | § Resolving a repo |
 | The forge CLI (`glab` for GitLab, `gh` for GitHub) reports not logged in, or `401` | The user runs `glab auth login --hostname <host>` / `gh auth login` — it needs a browser. Stop and wait. |
-| `.scratch` listed as untracked in `git status` | Append `.scratch` — **no trailing slash**, git treats a symlink as a file — to the file `git config --global core.excludesfile` names; if unset, use `~/.config/git/ignore` and set it. Done when `git check-ignore -v .scratch` matches in a worktree. |
 | The issue tracker's tools are absent from the session | Tell the user which MCP server or CLI is missing; carry on without the ticket if they say so. |
 
 ## Project context
 
-Before forming any opinion about a change, read what the project says about
-itself, in this order, and proceed silently past whatever is absent:
+Before forming any opinion about a change, read what the project says about itself:
 
-1. The repo's `CLAUDE.md` / `AGENTS.md`, and `docs/adr/` if present.
-2. When the change belongs to a workspace (`mur workspace show <name>`, see
-   `pivo:multirepo`): which repo does what.
-3. Any skill in this session that describes the project — its domain glossary
-   (a `<team>-context`-style skill), its code style, its review, its MR
-   description format, its watching of open merge requests. Its name usually
-   carries the team or project name.
-
-A project skill beats the generic default every phase falls back on. Name the ones
-you found when you first use them.
-
-## Where things live
-
-```
-~/.pivo/
-  work/<slug>/            one effort: intent.md, understanding.md, spec.md, issues/NN-<slug>.md
-  wt/<repo>/<ticket>/     one git worktree per ticket, .scratch -> work/<slug>/
-```
-
-Artifacts live only under `work/<slug>/`, outside every repo's history. Each
-worktree reads them through its `.scratch` symlink.
-
-## Resolving a repo
-
-Every repo path comes from a resolver; the working directory is at most a hint
-about scope.
-
-- The repo is in a mur workspace: `pivo:multirepo` — `mur resolve` and its
-  agent guide decide the path and what to do when it cannot.
-- The working directory is that repo: use it.
-- Otherwise ask the user — one question, two options: give the path, or clone it
-  (then ask where, and `git clone` the canonical URL). Note the path in the issue
-  file's `## Comments` for the next session.
-
-Stop at a non-zero exit rather than run `git -C ""` in whatever repo you happen
-to be in.
+* When the change belongs to a workspace (`mur workspace show <name>`, see `pivo:multirepo`): which repo does what.
 
 ## Approval gate
 
