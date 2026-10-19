@@ -1,11 +1,11 @@
 ---
 name: multirepo
-description: Locate and work across several git repositories with mur. Use when a task touches more than one repo, names a repo you have no path for, or refers to a workspace such as auditlogs or modelhub, before guessing a path or searching the disk.
+description: Locate and work across several git repositories with mur. Use when a task touches more than one repo, names a repo you have no path for, or refers to a workspace, before guessing a path or searching the disk.
 ---
 
 # multirepo
 
-`mur` is the authority on which repos a workspace holds, what each is for, and
+`mur` cli is the authority on which repos a workspace holds, what each is for, and
 where each is cloned on this machine. Ask it; don't guess.
 
 1. Once per session, before any other mur call, run `mur agent-guide` and follow
