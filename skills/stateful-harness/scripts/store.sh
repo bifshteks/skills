@@ -1,51 +1,78 @@
 #!/usr/bin/env bash
 # Persistent storage for agents under ~/.pivo. See ../SKILL.md.
+# Knows directories, names and locks; what a name means is the caller's business.
 set -euo pipefail
 
 usage='usage:
   store.sh root                              create ~/.pivo if missing; print it
-  store.sh find <TICKET|slug>                print matching dirs in ~/.pivo/work; exit 1 if none
-  store.sh dir <name>                        create ~/.pivo/work/<name> if missing; print it
-                                             name: <slug> or <TICKET>-<slug>
+  store.sh mkdir <path>                      create ~/.pivo/<path> if missing; print it
+  store.sh find <mode> <parent> <query>      print dirs directly in ~/.pivo/<parent> whose
+                                             name matches; exit 1 if none
+                                             mode: exact | prefix | suffix | approx
   store.sh lock <file> <owner>               exit 0: acquired; exit 1: held, prints "<owner> <time>"
   store.sh unlock <file> <owner> [--force]   exit 0: released; exit 1: not yours, prints holder
-exit 2: bad usage or invalid name'
+<path>/<parent>: relative to ~/.pivo, "/"-separated, no "." or ".." parts ("." alone is the root)
+exit 2: bad usage or invalid path'
 
 root="$HOME/.pivo"
-work="$root/work"
-slug='[a-z0-9]+(-[a-z0-9]+)*'
-ticket='[A-Z][A-Z0-9]*-[0-9]+'
 
 die() { echo "store.sh: $2" >&2; exit "$1"; }
 
-# A unit-of-work directory is <slug> or <TICKET>-<slug>.
-valid_name() { [[ "$1" =~ ^($ticket-)?$slug$ ]]; }
+# A path stays inside the root: relative, no empty, ".", ".." or "-"-leading parts.
+valid_path() {
+  local p="$1" part
+  [[ -n "$p" && "$p" != /* ]] || return 1
+  local -a parts
+  IFS=/ read -ra parts <<< "$p"
+  [[ "$p" != */ ]] || return 1
+  for part in "${parts[@]}"; do
+    [[ -n "$part" && "$part" != . && "$part" != .. && "$part" != -* ]] || return 1
+  done
+}
+
+# approx: case and separators (- _ . space) ignored, and every word of the
+# query must appear in the name, in any order: "Login fix" finds QWE-1-fix-login.
+approx_match() {
+  local name query word
+  name="$(tr '[:upper:]' '[:lower:]' <<< "$1" | tr -c '[:alnum:]\n' ' ')"
+  query="$(tr '[:upper:]' '[:lower:]' <<< "$2" | tr -c '[:alnum:]\n' ' ')"
+  name="${name// /}"
+  for word in $query; do
+    [[ "$name" == *"$word"* ]] || return 1
+  done
+}
 
 case "${1:-}" in
   root)
     mkdir -p "$root"
     echo "$root"
     ;;
+  mkdir)
+    valid_path "${2:-}" || die 2 "invalid path '${2:-}': want a relative path inside ~/.pivo, e.g. work/fix-login"
+    mkdir -p "$root/$2"
+    echo "$root/$2"
+    ;;
   find)
-    q="${2:-}"
-    if [[ "$q" =~ ^$ticket$ ]]; then match="^$q-$slug$"
-    elif [[ "$q" =~ ^$slug$ ]]; then match="^($ticket-)?$q$"
-    else die 2 "invalid query '$q': want a ticket key (QWE-123) or a slug (fix-login)"
-    fi
+    mode="${2:-}" parent="${3:-}" q="${4:-}"
+    [[ "$mode" =~ ^(exact|prefix|suffix|approx)$ ]] || die 2 "invalid mode '$mode': want exact, prefix, suffix or approx"
+    [[ "$parent" == . ]] || valid_path "$parent" || die 2 "invalid parent '$parent'"
+    [[ -n "$q" && "$q" != */* ]] || die 2 "invalid query '$q': want a non-empty name without '/'"
+    [[ -n "$(tr -d -c '[:alnum:]' <<< "$q")" || "$mode" != approx ]] || die 2 "approx query '$q' has no letters or digits"
+    dir="$root"; [[ "$parent" == . ]] || dir="$root/$parent"
     found=1
-    for d in "$work"/*/; do
+    for d in "$dir"/*; do
       [[ -d "$d" ]] || continue
-      d="${d%/}"
-      [[ "${d##*/}" =~ $match ]] || continue
+      name="${d##*/}"
+      case "$mode" in
+        exact)  [[ "$name" == "$q" ]] ;;
+        prefix) [[ "$name" == "$q"* ]] ;;
+        suffix) [[ "$name" == *"$q" ]] ;;
+        approx) approx_match "$name" "$q" ;;
+      esac || continue
       echo "$d"
       found=0
     done
     exit "$found"
-    ;;
-  dir)
-    valid_name "${2:-}" || die 2 "invalid name '${2:-}': want <slug> or <TICKET>-<slug>, e.g. QWE-123-fix-login"
-    mkdir -p "$work/$2"
-    echo "$work/$2"
     ;;
   lock)
     [[ -n "${2:-}" && -n "${3:-}" ]] || die 2 "usage: store.sh lock <file> <owner>"

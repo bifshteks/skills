@@ -20,23 +20,33 @@ phase.
 
 ## The effort
 
-An **effort** is one change, from intent to open merge requests: a unit of work
-in `pivo:stateful-harness`. Call the Skill tool for `pivo:stateful-harness`
-before the phase reads or writes its first file; `store.sh` below is the script
-it names, and every storage path a phase uses comes from it.
+An **effort** is one change, from intent to open merge requests, usually a
+ticket, often split across many sessions and subagents. It is one directory,
+`work/<name>` in the store.
 
-1. Agree the effort's `<name>` per § Tickets in the tracker.
-2. `store.sh find <TICKET-KEY|slug>` — resume a listed directory when it is this
-   change.
-3. Otherwise `store.sh dir <name>`.
+Call the Skill tool for `pivo:stateful-harness` before the phase reads or writes
+its first file; `store.sh` below is the script it names, and every storage path a
+phase uses comes from it.
 
-The printed path is `<effort>`. It holds `intent.md`, `understanding.md`,
+1. Agree the effort's `<name>` per § Tickets in the tracker. One ticket can own
+   several efforts, one per angle of work: `QWE-123-api-spike`,
+   `QWE-123-migration-plan`.
+2. Look for it:
+   - with a ticket: `store.sh find prefix work <TICKET-KEY>-`
+   - without: `store.sh find exact work <slug>`, then
+     `store.sh find suffix work -<slug>`
+   - only a vague description from the user: `store.sh find approx work "<words>"`
+
+   Resume a listed directory when it is this change; ask when several could be.
+3. Otherwise `store.sh mkdir work/<name>`.
+
+The printed path is `<effort>`. It may hold `intent.md`, `understanding.md`,
 `spec.md` and `issues/NN-<ticket-slug>.md`.
 
 Earlier efforts in an area: list `$(store.sh root)/work/`.
 
-Worktrees live in `$(store.sh root)/wt/<repo>/<ticket>/`, outside `work/`: a
-checkout is not state.
+Worktrees live in `wt/<repo>/<ticket>` in the store, outside `work/`: a checkout
+is not state.
 
 ## Approval gate
 

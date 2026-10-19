@@ -18,54 +18,95 @@ test_root_creates_storage_root_and_prints_it() {
   [[ -d "$HOME/.pivo" ]] || fail "~/.pivo not created"
 }
 
-test_dir_creates_named_directory_and_prints_it() {
+test_mkdir_creates_path_under_root_and_prints_it() {
   fresh_home
-  for name in QWE-123-create-stateful-harness-skill create-stateful-harness-skill; do
-    out="$("$STORE" dir "$name")" || fail "$name: exit $?"
-    [[ "$out" == "$HOME/.pivo/work/$name" ]] || fail "$name: printed '$out'"
-    [[ -d "$HOME/.pivo/work/$name" ]] || fail "$name: not created"
+  for path in fix-login work/QWE-123-anything "wt/repo/Some Name_1.x"; do
+    out="$("$STORE" mkdir "$path")" || fail "$path: exit $?"
+    [[ "$out" == "$HOME/.pivo/$path" ]] || fail "$path: printed '$out'"
+    [[ -d "$HOME/.pivo/$path" ]] || fail "$path: not created"
   done
 }
 
-test_dir_rejects_invalid_names_without_creating_anything() {
+test_mkdir_rejects_paths_leaving_root_without_creating_anything() {
   fresh_home
-  for name in "" Create-Harness QWE-123 qwe-123-x/y ../escape foo_bar -foo foo- foo--bar; do
-    "$STORE" dir "$name" >/dev/null 2>&1
+  for path in "" / /tmp/x .. ../escape work/../../escape . ./x work/ work//x -rf; do
+    "$STORE" mkdir "$path" >/dev/null 2>&1
     code=$?
-    [[ $code == 2 ]] || fail "'$name': exit $code, want 2"
+    [[ $code == 2 ]] || fail "'$path': exit $code, want 2"
   done
-  [[ -z "$(ls -A "$HOME/.pivo/work" 2>/dev/null)" ]] || fail "created: $(ls -A "$HOME/.pivo/work")"
-  [[ ! -e "$HOME/.pivo/escape" && ! -e "$HOME/escape" ]] || fail "escaped ~/.pivo/work"
+  [[ -z "$(ls -A "$HOME/.pivo" 2>/dev/null)" ]] || fail "created: $(ls -A "$HOME/.pivo")"
+  [[ ! -e "$HOME/escape" && ! -e /tmp/x ]] || fail "escaped ~/.pivo"
 }
 
-test_find_lists_directories_by_ticket_or_slug() {
-  fresh_home
+# Fixture: dirs in ~/.pivo/work, plus a file and a nested dir that must never match.
+seed_work() {
   mkdir -p "$HOME/.pivo/work"/{QWE-123-api-spike,QWE-123-migration-plan,QWE-1234-other,fix-login,ABC-9-fix-login,fix-login-v2}
-  mkdir -p "$HOME/.pivo/wt/QWE-123-worktree"
+  mkdir -p "$HOME/.pivo/work/fix-login/QWE-123-nested"
   touch "$HOME/.pivo/work/QWE-123-notes.md"
+}
 
-  out="$("$STORE" find QWE-123)" || fail "ticket: exit $?"
-  want="$HOME/.pivo/work/QWE-123-api-spike
-$HOME/.pivo/work/QWE-123-migration-plan"
-  [[ "$out" == "$want" ]] || fail "ticket: got '$out'"
+# find_is <mode> <query> <expected names in work/, sorted, space-separated>
+find_is() {
+  local out want="" n
+  out="$("$STORE" find "$1" work "$2")" || fail "$1 '$2': exit $?"
+  for n in $3; do want+="$HOME/.pivo/work/$n"$'\n'; done
+  [[ "$out" == "${want%$'\n'}" ]] || fail "$1 '$2': got '$out'"
+}
 
-  out="$("$STORE" find fix-login)" || fail "slug: exit $?"
-  want="$HOME/.pivo/work/ABC-9-fix-login
-$HOME/.pivo/work/fix-login"
-  [[ "$out" == "$want" ]] || fail "slug: got '$out'"
+test_find_exact() {
+  fresh_home; seed_work
+  find_is exact fix-login "fix-login"
+}
+
+test_find_prefix() {
+  fresh_home; seed_work
+  find_is prefix QWE-123- "QWE-123-api-spike QWE-123-migration-plan"
+  find_is prefix QWE-123 "QWE-123-api-spike QWE-123-migration-plan QWE-1234-other"
+}
+
+test_find_suffix() {
+  fresh_home; seed_work
+  find_is suffix -fix-login "ABC-9-fix-login"
+  find_is suffix fix-login "ABC-9-fix-login fix-login"
+}
+
+test_find_approx_ignores_case_separators_and_word_order() {
+  fresh_home; seed_work
+  find_is approx "Login fix" "ABC-9-fix-login fix-login fix-login-v2"
+  find_is approx migration_PLAN "QWE-123-migration-plan"
+  find_is approx qwe123 "QWE-123-api-spike QWE-123-migration-plan QWE-1234-other"
+}
+
+test_find_in_root_and_nested_parent() {
+  fresh_home; seed_work
+  out="$("$STORE" find exact . work)" || fail "root: exit $?"
+  [[ "$out" == "$HOME/.pivo/work" ]] || fail "root: got '$out'"
+  out="$("$STORE" find prefix work/fix-login QWE)" || fail "nested: exit $?"
+  [[ "$out" == "$HOME/.pivo/work/fix-login/QWE-123-nested" ]] || fail "nested: got '$out'"
 }
 
 test_find_exits_1_when_nothing_matches() {
-  fresh_home
-  out="$("$STORE" find QWE-999)"
-  code=$?
-  [[ $code == 1 ]] || fail "exit $code, want 1"
-  [[ -z "$out" ]] || fail "printed '$out'"
+  fresh_home; seed_work
+  for args in "exact work QWE-999" "prefix nowhere x" "approx work zzz"; do
+    out="$("$STORE" find $args)"
+    code=$?
+    [[ $code == 1 ]] || fail "'$args': exit $code, want 1"
+    [[ -z "$out" ]] || fail "'$args': printed '$out'"
+  done
+}
+
+test_find_rejects_bad_arguments() {
+  fresh_home; seed_work
+  for args in "" "fuzzy work x" "exact ../x y" "exact work" "exact work a/b" "approx work ---"; do
+    "$STORE" find $args >/dev/null 2>&1
+    code=$?
+    [[ $code == 2 ]] || fail "'$args': exit $code, want 2"
+  done
 }
 
 test_lock_goes_to_first_claimant_and_reports_holder_to_second() {
   fresh_home
-  f="$("$STORE" dir fix-login)/plan.md"
+  f="$("$STORE" mkdir work/fix-login)/plan.md"
 
   out="$("$STORE" lock "$f" "subagent api")" || fail "first: exit $?"
   [[ -z "$out" ]] || fail "first printed '$out'"
@@ -82,7 +123,7 @@ test_lock_goes_to_first_claimant_and_reports_holder_to_second() {
 
 test_lock_has_exactly_one_winner_under_contention() {
   fresh_home
-  f="$("$STORE" dir fix-login)/plan.md"
+  f="$("$STORE" mkdir work/fix-login)/plan.md"
   codes="$(mktemp -d)"
   for i in 1 2 3 4 5 6 7 8 9 10; do
     ( "$STORE" lock "$f" "agent-$i" >/dev/null 2>&1; echo $? > "$codes/$i" ) &
@@ -94,7 +135,7 @@ test_lock_has_exactly_one_winner_under_contention() {
 
 test_unlock_releases_only_own_lock() {
   fresh_home
-  f="$("$STORE" dir fix-login)/plan.md"
+  f="$("$STORE" mkdir work/fix-login)/plan.md"
   "$STORE" lock "$f" "subagent api" || fail "lock: exit $?"
   holder="$(cat "$f.lock")"
 
@@ -110,7 +151,7 @@ test_unlock_releases_only_own_lock() {
 
 test_unlock_force_releases_any_lock() {
   fresh_home
-  f="$("$STORE" dir fix-login)/plan.md"
+  f="$("$STORE" mkdir work/fix-login)/plan.md"
   "$STORE" lock "$f" crashed-agent || fail "lock: exit $?"
   "$STORE" unlock "$f" rescuer --force || fail "force: exit $?"
   [[ ! -e "$f.lock" ]] || fail "force left the lock"
@@ -118,7 +159,7 @@ test_unlock_force_releases_any_lock() {
 
 test_unlock_without_lock_reports_not_held() {
   fresh_home
-  f="$("$STORE" dir fix-login)/plan.md"
+  f="$("$STORE" mkdir work/fix-login)/plan.md"
   out="$("$STORE" unlock "$f" me 2>/dev/null)"
   code=$?
   [[ $code == 1 ]] || fail "exit $code, want 1"
