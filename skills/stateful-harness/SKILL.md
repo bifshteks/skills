@@ -1,16 +1,14 @@
 ---
 name: stateful-harness
-description: Use before saving anything that must outlive this session or be read by another session or subagent, when looking up state saved before, and before parallel agents edit shared files.
+description: Durable store under ~/.pivo — directories, name lookup, file locks. Use before saving state another session or subagent will read, when looking up saved state, and before parallel agents edit one file.
 user-invocable: false
 ---
 
 Durable state lives under `~/.pivo`, outside every repo. Every operation goes through
 `${CLAUDE_SKILL_DIR}/scripts/store.sh`; run it bare for usage.
 
-It is a dumb store: directories, name lookups and file locks. It does not know what a
-directory is for, how it is named, or which one to resume. The caller decides the
-layout and the names, and acts on what `store.sh` reports through stdout and exit
-code.
+It is a dumb store. The caller owns the layout, the names and which directory to
+resume, and acts on what `store.sh` reports through stdout and exit code.
 
 ## Directories
 

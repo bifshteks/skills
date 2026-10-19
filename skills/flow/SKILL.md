@@ -20,17 +20,15 @@ phase.
 
 ## The effort
 
-An **effort** is one change, from intent to open merge requests, usually a
-ticket, often split across many sessions and subagents. It is one directory,
+An **effort** is one change, from intent to open merge requests, often split
+across many sessions and subagents. It is one directory,
 `work/<name>` in the store.
 
 Call the Skill tool for `pivo:stateful-harness` before the phase reads or writes
 its first file; `store.sh` below is the script it names, and every storage path a
 phase uses comes from it.
 
-1. Agree the effort's `<name>` per § Tickets in the tracker. One ticket can own
-   several efforts, one per angle of work: `QWE-123-api-spike`,
-   `QWE-123-migration-plan`.
+1. Agree the effort's `<name>` per § Tickets in the tracker.
 2. Look for it:
    - with a ticket: `store.sh find prefix work <TICKET-KEY>-`
    - without: `store.sh find exact work <slug>`, then
@@ -71,6 +69,9 @@ carries all three names. `<slug>` is a short kebab-case name for the change:
 | effort `<name>` | `<TICKET-KEY>-<slug>` | `<slug>` |
 | branch | `<TICKET-KEY>-<ticket-slug>` | `<slug>-<ticket-slug>` |
 | MR title | `<TICKET-KEY>: <ticket title>` | `<ticket title>` |
+
+One ticket can own several efforts, one per angle of work: `QWE-123-api-spike`,
+`QWE-123-migration-plan`.
 
 ## Inputs
 
