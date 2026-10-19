@@ -17,11 +17,6 @@ phase.
 | The forge CLI (`glab` for GitLab, `gh` for GitHub) reports not logged in, or `401` | The user runs `glab auth login --hostname <host>` / `gh auth login` — it needs a browser. Stop and wait. |
 | The issue tracker's tools are absent from the session | Tell the user which MCP server or CLI is missing; carry on without the ticket if they say so. |
 
-## Project context
-
-Before forming any opinion about a change, read what the project says about itself:
-
-* When the change belongs to a workspace (`mur workspace show <name>`, see `pivo:multirepo`): which repo does what.
 
 ## The effort
 
@@ -57,8 +52,7 @@ How a phase asks the user to approve a file it wrote:
 Read the ticket through whatever the session has for the project's tracker —
 an MCP server or a CLI for Jira, GitHub or GitLab issues, Linear.
 
-A ticket is optional. "No ticket" is a legitimate answer — plenty of changes start
-as "I want to change X" — and every phase runs identically without one. When there
+A ticket is optional. "No ticket" is a legitimate answer. When there
 is one, its key is the only thread between the ticket and the merge requests, so it
 carries all three names. `<slug>` is a short kebab-case name for the change:
 
@@ -67,8 +61,6 @@ carries all three names. `<slug>` is a short kebab-case name for the change:
 | effort `<name>` | `<TICKET-KEY>-<slug>` | `<slug>` |
 | branch | `<TICKET-KEY>-<ticket-slug>` | `<slug>-<ticket-slug>` |
 | MR title | `<TICKET-KEY>: <ticket title>` | `<ticket title>` |
-
-A project's own convention for branch or MR names, from § Project context, wins.
 
 ## Inputs
 
