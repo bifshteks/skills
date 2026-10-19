@@ -14,8 +14,6 @@ phase.
 | Symptom | Fix |
 |---|---|
 | A repo has no known path | Resolve it per `pivo:multirepo`. |
-| The forge CLI (`glab` for GitLab, `gh` for GitHub) reports not logged in, or `401` | The user runs `glab auth login --hostname <host>` / `gh auth login` — it needs a browser. Stop and wait. |
-| The issue tracker's tools are absent from the session | Tell the user which MCP server or CLI is missing; carry on without the ticket if they say so. |
 
 
 ## The effort
@@ -106,9 +104,9 @@ cannot start a slash command:
 
 ```
 Next — your call:
-- /pivo:<phase> — <why, from this effort: repos touched, contracts,
+- /pivo:<phase> <[optional] effort name> <[optional] ticket number> — <why, from this effort: repos touched, contracts,
   deploy ordering, open questions, size>
-- /pivo:<phase> — <the alternative, and when it is the better choice>
+- /pivo:<phase> <[optional] effort name> <[optional] ticket number> — <the alternative, and when it is the better choice>
 ```
 
 One or two lines, the more likely first. The reason is about this effort, not
