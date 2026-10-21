@@ -1,6 +1,6 @@
 ---
 name: multirepo
-description: Locate and work across several git repositories with mur. Use when a task touches more than one repo, names a repo you have no path for, or refers to a workspace, before guessing a path or searching the disk.
+description: Find a repo's path on this machine and what it is for. Use whenever a task names a repo or service you have no path for — even just one, even by short name ("in logrotate", "the exporter") — spans several repos, or refers to a workspace. Most repos have several clones and worktrees here; resolve first, before find or a guessed path.
 ---
 
 # multirepo
