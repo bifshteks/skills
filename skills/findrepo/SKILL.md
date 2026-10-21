@@ -1,6 +1,6 @@
 ---
 name: repofind
-description: Find a repo's path on this machine and what it is for. Use whenever a task names a repo or service you have no path for — even just one, even by short name ("in logrotate", "the exporter") — spans several repos, or refers to a workspace. Most repos have several clones and worktrees here; resolve first, before find or a guessed path.
+description: Find a repo's path on this machine and what it is for. Use whenever a task names a repo or service you have no path for — even just one, even by short name — spans several repos, or refers to a workspace. Most repos have several clones and worktrees here; resolve first, before find or a guessed path.
 ---
 
 # repofind
