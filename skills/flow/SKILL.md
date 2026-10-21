@@ -13,7 +13,7 @@ phase.
 
 | Symptom | Fix |
 |---|---|
-| A repo has no known path | Resolve it per `pivo:multirepo`. |
+| A repo has no known path | Resolve it per `pivo:repofind`. |
 
 
 ## The effort

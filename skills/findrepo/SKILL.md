@@ -1,9 +1,9 @@
 ---
-name: multirepo
+name: repofind
 description: Find a repo's path on this machine and what it is for. Use whenever a task names a repo or service you have no path for — even just one, even by short name ("in logrotate", "the exporter") — spans several repos, or refers to a workspace. Most repos have several clones and worktrees here; resolve first, before find or a guessed path.
 ---
 
-# multirepo
+# repofind
 
 `mur` cli is the authority on which repos a workspace holds, what each is for, and
 where each is cloned on this machine. Ask it; don't guess.
