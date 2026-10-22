@@ -26,7 +26,7 @@ against it.
 | maintainer | changes code | [`roles/maintainer.md`](roles/maintainer.md) |
 | on-duty | changes code that runs in production | [`roles/on-duty.md`](roles/on-duty.md) |
 | backcompat | changes what someone else reads — an API, a schema, stored data, config, a message format | Who reads this today — old data, deployed consumers mid-rollout, API clients — and what breaks for them? |
-| security | touches input from outside, auth, secrets, tenancy, or what goes into logs | How would an attacker or a careless tenant use this, and whose data could they reach? |
+| security | always | [`roles/security.md`](roles/security.md) |
 
 ## Dispatch
 

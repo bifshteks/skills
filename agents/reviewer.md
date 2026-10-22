@@ -41,7 +41,7 @@ role: <role>
 range: <range>
 
 Concerns
-- <file>:<line> — <what breaks, or who suffers> — <what to do> — confidence: high | medium | low
+- <file>:<line> — <what breaks, or who suffers> — <what to do> — confidence: high | medium | low, severity: 0-100
 
 Ideas
 - <what you would want that this diff does not break> — <why it matters>
