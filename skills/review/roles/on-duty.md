@@ -50,9 +50,6 @@ A bunch of logs produced for every step which do not helps to investigate is noi
 
 ## Done
 
-Every failure point the diff adds has its four answers or a concern;
+Every failure point the diff adds has its answers or a concern;
 a few incidents walked to the line.
-Each concern is reported with rate with two axis:
-* confidence - how sure you this is a problem: from 0 (not confident at all) to 100 (very confident)
-* severity - how much you think this is a problem for an on call: from 0 (not a problem) to 100 (real problem, an on-call would suffer without it fixed)
 
