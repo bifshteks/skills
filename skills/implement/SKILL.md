@@ -90,6 +90,17 @@ ticket is tested at and get the user to confirm them. No test is written at an
 unconfirmed seam. You cannot test everything, and agreeing the seams up front is
 how the effort lands on the critical path instead of on every edge case.
 
+**Agree the failure points with them.** Alongside the seams, list every failure
+point the ticket adds — each call that can fail or be slow, each path that leaves
+a unit of work early — and the signal on-call would use to detect each one and
+tell it from its neighbours. Walk them as the on-duty reviewer does, in
+[`../review/roles/on-duty.md`](../review/roles/on-duty.md), starting from the
+dashboards and alerts that already cover this unit of work. Each failure point is
+a behaviour: its test injects the failure at the seam and asserts the telemetry
+names it, through the project's in-memory span exporter, metric reader or log
+capture. Telemetry is an output on-call reads, so asserting on it is not
+implementation coupling.
+
 **One slice at a time.** One seam, one failing test, the smallest code that
 passes it, repeat. Never write the whole test suite first: bulk tests verify
 behaviour you only imagined, they freeze a structure you do not understand yet,
@@ -128,18 +139,14 @@ this MR where they are local to the repo.
 ## Review
 
 If the session has a review skill for this project, invoke it on the branch, fix
-what it finds, and loop under its rules.
-
-Otherwise review the diff against the base yourself, one sub-agent per lens:
-**spec** (does it do the ticket, and only the ticket), **style** (the project's
-stated rules), **backcompat** (readers of existing data, deployed consumers, API
-clients), **observability** (can on-call diagnose it), **security**, **resilience**
-(failure, retry, concurrency). A finding is real only with a concrete answer to
-"what breaks, or who suffers, if this is not fixed?". After a fix, re-run the
-lenses that found something, plus `spec`.
+what it finds, and loop under its rules. Otherwise call the Skill tool for
+`pivo:review` on the branch, with the issue file as the goal, and fix its Blocks.
 
 Either way, cap it at three rounds. Still finding real issues at round three means
 the ticket is wrong, not the code: the branch stays unpushed until the user decides.
+
+The review's Ideas go to the issue file's `## Comments` and the MR description,
+where the user picks them up; the ticket ships without them.
 
 ## Push and open the MR
 
