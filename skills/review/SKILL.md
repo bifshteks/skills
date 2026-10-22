@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a branch or diff from the roles it touches — on-duty, maintainer, spec, backcompat, security. Use before pushing, on a merge request, or from /pivo:implement.
+description: Review a branch or diff from the roles it touches. Use before pushing, on a merge request, or from /pivo:implement.
 ---
 
 # Review
@@ -14,15 +14,12 @@ Default to `<base>...HEAD`, where `<base>` is `origin/HEAD`. Otherwise review
 since whatever fixed point the user named — commit, branch, tag — or the diff of
 the MR they pointed at.
 
-The **goal** is what the change is for: the issue file when `/pivo:implement`
-called you, else the MR description, else the user's sentence. Every role grades
-against it.
-
 ## Roles
 
 | Role | Runs when the diff | Role text |
 |---|---|---|
 | spec | always | Does it do the goal, and only the goal? Scope creep and missing pieces are both concerns. |
+| mr-reviewer | always | [`roles/mr-reviewer.md`](roles/mr-reviewer.md) |
 | maintainer | changes code | [`roles/maintainer.md`](roles/maintainer.md) |
 | on-duty | changes code that runs in production | [`roles/on-duty.md`](roles/on-duty.md) |
 | backcompat | changes what someone else reads — an API, a schema, stored data, config, a message format | Who reads this today — old data, deployed consumers mid-rollout, API clients — and what breaks for them? |
@@ -61,6 +58,8 @@ Reviewers report every concern; you run the one filter pass.
    - a reader of existing data, a deployed consumer or an API client breaks
    - on-call cannot tell from telemetry that it broke, where, or why
    - the logic is wrong
+   - a reviewer cannot verify it from the diff: logic buried in a refactor or a
+     move, or more than one sitting can hold
    - the next change costs materially more
    Anything else is an Idea or is dropped.
 2. **Duplicates.** One concern raised by several roles becomes one Block naming
