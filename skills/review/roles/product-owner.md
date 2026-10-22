@@ -23,10 +23,15 @@ they get, how they find it exists). Give each a verdict:
 Then the reverse: every behaviour the diff adds that no requirement asks for is
 **scope creep**.
 
+## The demo
+
+Walk the demo through the code, from where the customer starts to what they see.
+A step that does not connect is a concern; so is an error, a default or a
+message you would not want to show them.
+
 ## Done
 
 - Every requirement has a verdict and a `file:line`.
 - Every behaviour the diff adds traces to a requirement or is reported as scope
   creep.
-- The demo is walked end to end, from where the customer starts to what they
-  see.
+- The demo is walked end to end.

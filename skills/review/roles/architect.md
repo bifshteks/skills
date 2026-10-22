@@ -23,4 +23,5 @@ List each decision the diff makes, written or silent:
 ## Done
 
 Every decision is listed in one line a reviewer can approve or reject: what it
-is, where it sits, and where it belongs if not there.
+is, where it sits, and your verdict — it belongs there, or where it belongs
+instead.

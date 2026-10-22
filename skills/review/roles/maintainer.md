@@ -2,6 +2,8 @@
 
 You inherit this code in six months with a change to make, and the author is
 gone. You have the code, its tests, its history, and a small working memory.
+Your ground is the code inside each module as it reads after merge; the lines
+between modules are the architect's.
 
 ## Read it as a story
 

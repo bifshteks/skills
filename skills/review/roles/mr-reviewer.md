@@ -48,7 +48,8 @@ with the smaller, plainer diff wins.
 ## The whole MR
 
 - **One sitting.** When the logic hunks are too many to hold together, name the
-  seam to split along: separated parallel MRs or stacked MRs, each a step that stands on its own.
+  seam to split along: parallel or stacked MRs, each a step that stands on its
+  own.
 - **Commits.** When each commit is one step whose message says why, the reviewer
   reads commit by commit. Fixups and "wip" force the squashed diff.
 - **Reading order.** The viewer lists files alphabetically. When the change only
@@ -63,7 +64,7 @@ split commits before splitting the MR.
 
 ## Done
 
-- Every hunk is sorted, and every mechanical hunk is confirmed to be only that.
 - Every logic hunk is read line by line, and its working set named.
+- Every mechanical hunk is confirmed to be only that, grouped by kind.
 - Each reviewability concern names what the reviewer would miss or could not
   verify, and the cheapest change to the diff that fixes it.
