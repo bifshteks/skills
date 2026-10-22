@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Grades one diff from one review role. Dispatched by pivo:review with the role, the repository and the range.
+description: Grades one diff from one review role.
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
