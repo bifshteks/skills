@@ -18,7 +18,7 @@ the MR they pointed at.
 
 | Role | Runs when the diff | Role text |
 |---|---|---|
-| spec | always | Does it do the goal, and only the goal? Scope creep and missing pieces are both concerns. |
+| product-owner | always | [`roles/product-owner.md`](roles/product-owner.md) |
 | mr-reviewer | always | [`roles/mr-reviewer.md`](roles/mr-reviewer.md) |
 | maintainer | changes code | [`roles/maintainer.md`](roles/maintainer.md) |
 | on-duty | changes code that runs in production | [`roles/on-duty.md`](roles/on-duty.md) |
@@ -52,6 +52,7 @@ Reviewers report every concern; you run the one filter pass.
 1. **What breaks.** Each concern gets one phrase: what specifically breaks, or
    who suffers, if it is not fixed? It is a **Block** only with a concrete
    answer:
+   - a requirement of the goal is missing, partial, or built on the wrong reading
    - CI or production falls over
    - a vulnerability, or one tenant's data reachable by another
    - data lost, duplicated or corrupted
@@ -72,8 +73,8 @@ Reviewers report every concern; you run the one filter pass.
 ## Rounds
 
 1. Round one runs every role the diff touches.
-2. After a fix, re-run the roles that raised Blocks, plus `spec`.
-3. After a rebase, re-run `backcompat`, `security` and `spec`.
+2. After a fix, re-run the roles that raised Blocks, plus `product-owner`.
+3. After a rebase, re-run `backcompat`, `security` and `product-owner`.
 4. Three rounds at most. Blocks still standing at round three mean the goal is
    wrong, not the code: stop, report what is outstanding, and leave the decision
    to the user.
