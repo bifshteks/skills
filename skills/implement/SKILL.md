@@ -45,8 +45,9 @@ until every file it names is `Status: resolved`.
 
 ## Worktree per ticket
 
-For each ticket, locate the repo its `Repo:` line names on this machine,
-then, with `store.sh` from `pivo:flow` § The effort:
+For each ticket, locate the repo involved — the one its `Repo:` line names, with
+a matching `origin` remote — on this machine, then, with `store.sh` from
+`pivo:flow` § The effort:
 
 ```bash
 REPO=<resolved path>

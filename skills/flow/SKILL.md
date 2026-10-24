@@ -13,7 +13,7 @@ phase.
 
 | Symptom | Fix |
 |---|---|
-| A repo has no known path | Locate every repo involved on this machine before touching it. Never guess a path; ask the user when it cannot be found. |
+| A repo has no known path | Locate every repo involved on this machine before touching it, and check that its `origin` remote is the repo you mean. Never guess a path; ask the user when it cannot be found. |
 
 
 ## The effort
