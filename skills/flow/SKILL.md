@@ -13,7 +13,7 @@ phase.
 
 | Symptom | Fix |
 |---|---|
-| A repo has no known path | Resolve it per `pivo:repofind`. |
+| A repo has no known path | Locate every repo involved on this machine before touching it. Never guess a path; ask the user when it cannot be found. |
 
 
 ## The effort
