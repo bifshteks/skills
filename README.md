@@ -66,7 +66,7 @@ An opinionated path from a fuzzy want to open merge requests. Each phase is invo
 - `/pivo:grill` → `/pivo:implement`: the decisions fit in `understanding.md`
 - `/pivo:implement` alone: it all fits in one prompt
 
-`/pivo:shape` is optional before any of them, for when the problem is not clear yet.
+`/pivo:intent` is optional before any of them, for when the problem is not clear yet.
 
 `/pivo:review` reviews any branch or MR from each role its diff touches, with one `pivo:reviewer` agent per role. `/pivo:implement` calls it when the project has no review skill of its own.
 

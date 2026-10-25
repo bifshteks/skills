@@ -12,7 +12,7 @@ naming and the project context live there.
 ## Intake
 
 Ask whether there is a ticket, through `AskUserQuestion`. An earlier effort with
-`intent.md` and no `understanding.md` means `/pivo:shape` ran for it: offer it as
+`intent.md` and no `understanding.md` means `/pivo:intent` ran for it: offer it as
 an option too, and that is the effort.
 
 With a ticket, read it from the tracker; without one, the user describes the
@@ -30,7 +30,7 @@ ships, and how will you notice?**
 
 - An answer naming a mechanism without a problem — ask what the mechanism is for.
 - "Not sure", or nothing concrete — stop, and end with the Next block from
-  `pivo:flow` offering `/pivo:shape`.
+  `pivo:flow` offering `/pivo:intent`.
 
 ### Words
 

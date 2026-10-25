@@ -1,6 +1,6 @@
 ---
 name: flow
-description: Shared contract the /pivo:shape, /pivo:grill, /pivo:spec, /pivo:tickets and /pivo:implement phases load first
+description: Shared contract the /pivo:intent, /pivo:grill, /pivo:spec, /pivo:tickets and /pivo:implement phases load first
 user-invocable: false
 ---
 
@@ -10,11 +10,6 @@ user-invocable: false
 
 Setup is lazy: fix a prerequisite the moment its symptom shows, then resume the
 phase.
-
-| Symptom | Fix |
-|---|---|
-| A repo has no known path | Locate every repo involved on this machine before touching it, and check that its `origin` remote is the repo you mean. Never guess a path; ask the user when it cannot be found. |
-
 
 ## The effort
 
@@ -96,6 +91,15 @@ yourself and write it down as *assumed*, where the phase records decisions. A
 wrong assumption in writing gets caught at a gate or in review; a silent one does
 not.
 
+## Phases
+
+* **intent** - the problem is unclear
+* **approaches** - problem is clear, an architecture way of solving it is not
+* **grill** - problem and approach is clear, need to settle down implementation details
+* **spec** - implementation details are clear, the change scope is likely to be implemented in different/multiple sessions
+* **tickets** - the change scope is definitely will be implemented in multiple sessions
+* **implement** - context window or written effort files are enough to go and implement changes
+
 ## Next — your call
 
 The user picks the path. Every phase ends by suggesting what could come next, then
@@ -109,6 +113,6 @@ Next — your call:
 - /pivo:<phase> <[optional] effort name> <[optional] ticket number> — <the alternative, and when it is the better choice>
 ```
 
-One or two lines, the more likely first. The reason is about this effort, not
+One to three lines, the more likely first. The reason is about this effort, not
 the phase in general — "one repo, no contract change", not "for small tasks".
 Each phase says which options it weighs.
