@@ -12,8 +12,8 @@ naming and the project context live there.
 ## Intake
 
 Ask whether there is a ticket, through `AskUserQuestion`. An earlier effort with
-`intent.md` and no `understanding.md` means `/pivo:intent` ran for it: offer it as
-an option too, and that is the effort.
+`intent.md` or a filled `approaches.md` and no `understanding.md` means an
+earlier phase ran for it: offer it as an option too, and that is the effort.
 
 With a ticket, read it from the tracker; without one, the user describes the
 change. Find or create the effort per `pivo:flow` § The effort.
@@ -21,7 +21,16 @@ change. Find or create the effort per `pivo:flow` § The effort.
 ### Outcome first
 
 If `<effort>/intent.md` exists, read it: its **Problem**, **Outcome** and **How
-we will know** are settled. Skip to Words.
+we will know** are settled.
+
+If `<effort>/approaches.md` exists with a filled `## Chosen`, read it: its
+**Problem** and **Chosen** approach are settled, so the grill covers only how to
+build the Chosen one, and its Context is settled fact. A constraint tagged
+`from the MR, unverified` stays open: confirm or drop it here. With both files,
+`approaches.md`'s Problem wins.
+
+With `intent.md`, skip to Words. With only `approaches.md`, ask just **how will
+you notice it shipped?**, handle the answer as below, then go to Words.
 
 Otherwise search the tracker for a parent ticket that states the goal, and list
 earlier efforts in the same area. Then ask the user, in
@@ -113,6 +122,9 @@ One line each, with its reason.
 ## Sketch
 Only if one was shown.
 ```
+
+With `approaches.md`, Decisions opens with the Chosen approach and its reason,
+pointing at `approaches.md` for the alternatives.
 
 Run the approval gate from `pivo:flow`: "Does this match what you want?" —
 "Yes", "The outcome is wrong", "The scope is wrong", "A decision is wrong".

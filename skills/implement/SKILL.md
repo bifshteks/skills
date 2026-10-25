@@ -15,7 +15,8 @@ Find or create the effort per `pivo:flow` § The effort, then read its input per
 **Inputs** there. Implement runs from any of them through to open MRs.
 
 With `issues/`, those are the tickets. Without, cut them yourself from the best
-input present — `spec.md`, `understanding.md`, `intent.md`, or the prompt:
+input present — `spec.md`, `understanding.md`, `approaches.md`, `intent.md`,
+or the prompt:
 
 - One ticket per repo the change touches, in the issue-file format from
   `/pivo:tickets`, numbered from `01`. One ticket, one repo, one MR still holds.
@@ -70,10 +71,11 @@ branch switching, no stashing.
 A session handed no issue-file path finds the effort per `pivo:flow` § The
 effort. Set `Status: claimed` in the issue file before any work.
 
-Read, in order: the issue file, whichever of `spec.md`, `understanding.md` and
-`intent.md` sit in `<effort>`, then the project context per `pivo:flow` — the
-repo's `CLAUDE.md` / `AGENTS.md` and `docs/adr/`, the workspace's map of repos,
-and the project's glossary and style skills. Proceed silently past what is absent.
+Read, in order: the issue file, whichever of `spec.md`, `understanding.md`,
+`approaches.md` and `intent.md` sit in `<effort>`, then the project context per
+`pivo:flow` — the repo's `CLAUDE.md` / `AGENTS.md` and `docs/adr/`, the
+workspace's map of repos, and the project's glossary and style skills. Proceed
+silently past what is absent.
 
 Implement the ticket. Not the spec, not the adjacent thing you noticed — the
 ticket. Review grades scope creep, and it is right to.

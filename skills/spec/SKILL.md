@@ -10,10 +10,11 @@ Call the Skill tool for `pivo:flow` before anything else: the effort, the
 naming and the project context live there.
 
 Find or create the effort per `pivo:flow` § The effort, then read its input per
-**Inputs** there: `understanding.md`, and `intent.md` if it exists. The spec
-elaborates `understanding.md` and never contradicts it. Without one, work from
-`intent.md` or the prompt; its *assumed* decisions go in the spec's Decisions,
-where Gate 1 catches them.
+**Inputs** there: `understanding.md`, and `approaches.md` and `intent.md` if
+they exist. The spec elaborates `understanding.md` and the Chosen approach in
+`approaches.md`, and never contradicts them. Without `understanding.md`, work
+from `approaches.md`, `intent.md` or the prompt; the *assumed* decisions go in
+the spec's Decisions, where Gate 1 catches them.
 
 Write `<effort>/spec.md`.
 
